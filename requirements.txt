@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Emotion-Aware Transcription Pipeline — Dependencies
+# Install: pip install -r requirements.txt
+#
+# GPU strongly recommended for CrisperWhisper.
+# For CUDA 12.x use:
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Core numerics / audio ─────────────────────────────────────────────────────
+numpy>=1.24.0
+soundfile>=0.12.1
+librosa>=0.10.1           # audio loading + high-quality resampling
+
+# ── PyTorch (CPU build — swap for GPU wheel above if you have a GPU) ──────────
+torch>=2.1.0
+torchaudio>=2.1.0
+
+# ── Step 1: VAD — pyannote.audio ──────────────────────────────────────────────
+# Requires a Hugging Face token + model access:
+#   1. Create account at https://huggingface.co
+#   2. Go to https://hf.co/pyannote/voice-activity-detection → accept terms
+#   3. Go to https://hf.co/pyannote/segmentation-3.0 → accept terms
+#   4. Generate a token at https://hf.co/settings/tokens (read scope is enough)
+#   5. Set HF_TOKEN=<your_token> in .env
+pyannote.audio>=3.1.0
+
+# ── Step 2: ASR — CrisperWhisper via HuggingFace Transformers ────────────────
+transformers>=4.40.0
+accelerate>=0.30.0        # faster model loading & device placement
+safetensors>=0.4.3        # safe model weight format used by CrisperWhisper
+huggingface-hub>=0.23.0   # model card / download utilities
+
+# ── Step 3: Emotion — Hume AI ─────────────────────────────────────────────────
+# Requires a Hume AI API key:
+#   1. Create account at https://dev.hume.ai
+#   2. Go to https://platform.hume.ai/settings/keys → create an API key
+#   3. Set HUME_API_KEY=<your_key> in .env
+hume>=0.7.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0       # loads .env file into os.environ automatically
